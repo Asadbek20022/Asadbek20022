@@ -19,15 +19,33 @@
 </head>
 <body class="bg-gray-900 text-white min-h-screen flex flex-col items-center justify-between p-4 relative">
 
-  <!-- Foydalanuvchi nomi -->
-  <div class="absolute top-4 left-4 glass px-4 py-2">
-    @vipASADBEK
-  </div>
+ <!-- Foydalanuvchi nomi -->
+<div id="username" class="absolute top-4 left-4 glass px-4 py-2">
+  Yuklanmoqda...
+</div>
 
-  <!-- Yuqori markazdagi panel -->
-  <div class="absolute top-4 left-1/2 transform -translate-x-1/2 glass px-6 py-2">
-    Yuqori Panel (keyin to'ldiriladi)
-  </div>
+<script>
+  // Telegram WebApp obyektini olish
+  const tg = window.Telegram.WebApp;
+
+  // WebApp tayyor bo‘lsa, foydalanuvchi nomini chiqarish
+  tg.ready();
+
+  if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+    const user = tg.initDataUnsafe.user;
+    const username = user.username ? '@' + user.username : user.first_name || 'Foydalanuvchi';
+    document.getElementById('username').textContent = username;
+  } else {
+    document.getElementById('username').textContent = 'Foydalanuvchi';
+  }
+</script>
+
+<!-- Yuqori markazdagi panel - SLARK ACCAUNT -->
+<a href="https://t.me/+N4BfjMhyOmBiYWIy" target="_blank" class="absolute top-4 left-1/2 transform -translate-x-1/2 
+  px-6 py-2 rounded-xl backdrop-blur-md border border-white/20 text-white font-semibold hover:scale-105 
+  transition-all duration-300 shadow-lg">
+  SLARK ACCAUNT
+</a>
 
   <!-- Balans -->
   <div class="absolute top-4 right-4 glass px-4 py-2">
@@ -48,14 +66,81 @@
   </div>
 
   <!-- Pastki menyular -->
-  <div class="w-full flex justify-between items-center px-4 pb-4">
-    <div class="glass w-1/5 h-14"></div>
-    <div class="glass w-1/5 h-14"></div>
-    <div class="glass w-1/5 h-14"></div>
-    <div class="glass w-1/5 h-14"></div>
-    <div class="glass w-1/5 h-14"></div>
+<div class="w-full flex justify-between items-center px-4 pb-4 fixed bottom-0 left-0 right-0 z-50 bg-transparent">
+  <div id="menu-main" class="glass w-1/5 h-14 flex items-center justify-center text-white font-bold border-2 border-white rounded-xl">
+    🏠
   </div>
+  <div id="menu-mission" onclick="openMission()" class="glass w-1/5 h-14 flex items-center justify-center text-white rounded-xl">
+    🎯
+  </div>
+  <div class="glass w-1/5 h-14 flex items-center justify-center text-white rounded-xl">
+    💰
+  </div>
+  <div class="glass w-1/5 h-14 flex items-center justify-center text-white rounded-xl">
+    📈
+  </div>
+<!-- Pulni yechish oynasi (modal) -->
+<div id="withdrawModal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 hidden">
+  <div class="bg-white glass p-6 rounded-2xl w-[90%] max-w-md text-black relative">
+    <h2 class="text-xl font-bold mb-4">💸 Pulni yechish</h2>
+    
+    <label class="block mb-2">💳 Karta raqamingiz:</label>
+    <input type="text" class="w-full p-2 rounded-lg mb-4 bg-white bg-opacity-20 text-black" placeholder="8600 xxxx xxxx xxxx" />
 
+    <div class="mb-4">
+      <span>💰 Yechiladigan summa: </span><strong>50 000 so'm</strong>
+    </div>
+
+    <button class="bg-green-600 text-white px-4 py-2 rounded-lg w-full">Yuborish</button>
+
+    <button onclick="closeWithdrawModal()" class="absolute top-2 right-4 text-xl text-white">✖</button>
+  </div>
+</div>
+
+<!-- 5-chi menyuga modal ochish qo‘shiladi -->
+<div class="glass w-1/5 h-14 flex items-center justify-center text-white rounded-xl" onclick="openWithdrawModal()">
+  💳
+</div>
+
+
+ <script>
+  function openWithdrawModal() {
+    document.getElementById("withdrawModal").classList.remove("hidden");
+  }
+
+  function closeWithdrawModal() {
+    document.getElementById("withdrawModal").classList.add("hidden");
+  }
+</script>
+
+  
+<!-- Missiyalar Ro'yxati -->
+<div id="missions" class="hidden absolute top-20 left-4 right-4 space-y-4 z-40">
+  <!-- 10 ta ro'yxat elementi -->
+  <div class="backdrop-blur-md bg-white/10 border border-white/10 text-white px-4 py-3 rounded-xl shadow-md">1. Har 10 daqiqa 100 so‘m olish</div>
+  <div class="backdrop-blur-md bg-white/10 border border-white/10 text-white px-4 py-3 rounded-xl shadow-md">2. Referal chaqirish (1000 so‘m)</div>
+  <div class="backdrop-blur-md bg-white/10 border border-white/10 text-white px-4 py-3 rounded-xl shadow-md">3. Telegram kanalga obuna bo‘lish</div>
+  <div class="backdrop-blur-md bg-white/10 border border-white/10 text-white px-4 py-3 rounded-xl shadow-md">4. YouTube videoni ko‘rish</div>
+  <div class="backdrop-blur-md bg-white/10 border border-white/10 text-white px-4 py-3 rounded-xl shadow-md">5. Har kuni botga kirish</div>
+  <div class="backdrop-blur-md bg-white/10 border border-white/10 text-white px-4 py-3 rounded-xl shadow-md">6. Do‘st taklif qilish</div>
+  <div class="backdrop-blur-md bg-white/10 border border-white/10 text-white px-4 py-3 rounded-xl shadow-md">7. Missiyani 5 marta bajarish</div>
+  <div class="backdrop-blur-md bg-white/10 border border-white/10 text-white px-4 py-3 rounded-xl shadow-md">8. Feedback yozish</div>
+  <div class="backdrop-blur-md bg-white/10 border border-white/10 text-white px-4 py-3 rounded-xl shadow-md">9. Profil rasm qo‘shish</div>
+  <div class="backdrop-blur-md bg-white/10 border border-white/10 text-white px-4 py-3 rounded-xl shadow-md">10. Mini App’ni baholash</div>
+</div>
+
+  <script>
+  function openMission() {
+    const el = document.getElementById("missions");
+    if (el.classList.contains("hidden")) {
+      el.classList.remove("hidden");
+    } else {
+      el.classList.add("hidden");
+    }
+  }
+</script>
+
+  
   <script>
     const coin = document.getElementById('coin');
     const balance = document.getElementById('balance');
