@@ -7,23 +7,36 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     .glass {
-      @apply bg-white/10 backdrop-blur-md rounded-2xl shadow-md;
+          @apply m-0 p-0 h-screen w-screen;
     }
-    .coin {
-      transition: transform 0.2s ease;
-    }
-    .coin:active {
-      transform: scale(0.95);
+    .bg-blur {
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
   </style>
 </head>
-<body class="bg-gray-900 text-white min-h-screen flex flex-col items-center justify-between p-4 relative">
+<body class="relative">
+  
+  <!-- Orqa fon -->
+  <div class="absolute inset-0 bg-gradient-to-br from-blue-700 via-indigo-500 to-purple-700 bg-blur z-0"></div>
 
- <!-- Foydalanuvchi nomi -->
-<div id="username" class="absolute top-4 left-4 glass px-4 py-2">
+<!-- Foydalanuvchi nomi -->
+<div id="username" class="absolute top-4 left-4 bg-blue-600 text-white rounded px-4 py-2 shadow-md">
   Yuklanmoqda...
 </div>
 
+<script>
+  window.onload = () => {
+    if (window.Telegram && Telegram.WebApp.initDataUnsafe.user) {
+      const user = Telegram.WebApp.initDataUnsafe.user;
+      const fullName = user.first_name + (user.last_name ? " " + user.last_name : "");
+      document.getElementById("username").innerText = fullName + " 👋";
+    } else {
+      document.getElementById("username").innerText = "Foydalanuvchi topilmadi";
+    }
+  };
+</script>
+  
 <script>
   // Telegram WebApp obyektini olish
   const tg = window.Telegram.WebApp;
@@ -52,6 +65,52 @@
     Balans: <span id="balance">0</span> so'm
   </div>
 
+  <script>
+  // Dastlabki balansni localStorage'dan o'qish
+  let balance = parseInt(localStorage.getItem("balance")) || 0;
+
+  // Balansni ko‘rsatish funksiyasi
+  function updateBalanceUI() {
+    document.getElementById("balance").innerText = balance;
+    const modalBalance = document.getElementById("modalBalance");
+    if (modalBalance) {
+      modalBalance.innerText = balance;
+    }
+  }
+
+  // Pul yechish funksiyasi
+  function withdraw() {
+    const amount = parseInt(document.getElementById("withdrawAmount").value);
+    if (isNaN(amount) || amount <= 0) {
+      alert("Iltimos, to‘g‘ri miqdor kiriting");
+      return;
+    }
+    if (amount > balance) {
+      alert("Yetarli mablag‘ mavjud emas");
+      return;
+    }
+    balance -= amount;
+    localStorage.setItem("balance", balance);
+    updateBalanceUI();
+    closeWithdrawModal();
+  }
+
+  // Modal oynani yopish
+  function closeWithdrawModal() {
+    document.getElementById("withdrawModal").classList.add("hidden");
+  }
+
+  // Modalni ochish (agar kerak bo‘lsa)
+  function openWithdrawModal() {
+    document.getElementById("withdrawModal").classList.remove("hidden");
+    updateBalanceUI();
+  }
+
+  // Sayt yuklanganda balansni yangilash
+  window.onload = updateBalanceUI;
+</script>
+
+  
   <!-- Markazdagi tanga -->
   <div class="flex-grow flex items-center justify-center">
     <div id="coin" class="w-40 h-40 bg-yellow-400 rounded-full flex items-center justify-center shadow-2xl coin relative">
